@@ -1,10 +1,22 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { WeatherModule } from 'infrastructure/modules/weather/weather.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dbConnectionOptions } from 'config/db.config';
+import { CqrsModule } from '@nestjs/cqrs';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ErrorsInterceptor } from 'presentation/interceptors';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot({ ...dbConnectionOptions, autoLoadEntities: true }),
+    CqrsModule.forRoot(),
+    WeatherModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorsInterceptor,
+    },
+  ],
 })
 export class AppModule {}

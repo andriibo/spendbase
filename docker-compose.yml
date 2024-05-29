@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  spendbase-api:
+    build:
+      context: .
+      target: development
+    restart: unless-stopped
+    tty: true
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    ports:
+      - ${SERVER_PORT}:3000
+    networks:
+      - spendbase-network
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16.2
+    restart: unless-stopped
+    tty: true
+    networks:
+      - spendbase-network
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pg-admin:
+    image: dpage/pgadmin4
+    restart: always
+    logging:
+      driver: none
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - spendbase-network
+
+networks:
+  spendbase-network:
+    name: spendbase-network
+volumes:
+  pgdata:
+  pgadmin-data:
