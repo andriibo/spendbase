@@ -12,10 +12,7 @@ export class WeatherRepository implements IWeatherRepository {
     private readonly repository: Repository<WeatherModel>,
   ) {}
 
-  async findByParams(
-    lat: number,
-    lon: number,
-  ): Promise<WeatherEntity> {
+  async findByParams(lat: number, lon: number): Promise<WeatherEntity> {
     return await this.repository.findOneBy({ lat, lon });
   }
 

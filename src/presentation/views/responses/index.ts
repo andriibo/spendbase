@@ -1,1 +1,1 @@
-export * from './weather-response.view';
+export * from './current-weather-response.view';

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { WeatherResponseDto } from 'domain/dto/responses';
+import { CurrentWeatherResponseDto } from 'domain/dto/responses';
 
-export class WeatherResponseView extends WeatherResponseDto {
+export class CurrentWeatherResponseView extends CurrentWeatherResponseDto {
   @ApiProperty()
   sunrise: number;
 
   @ApiProperty()
   sunset: number;
 
-  @ApiProperty({ example: 0 })
-  temp: number | object;
+  @ApiProperty()
+  temp: number;
 
   @ApiProperty({ name: 'feels_like' })
   feelsLike: number;

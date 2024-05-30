@@ -1,1 +1,1 @@
-export * from './weather-response.dto';
+export * from './current-weather-response.dto';
