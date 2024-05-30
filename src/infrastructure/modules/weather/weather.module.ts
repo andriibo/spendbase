@@ -13,6 +13,7 @@ import { IWeatherRepository } from 'domain/repositories';
 import { WeatherRepository } from 'infrastructure/modules/weather/repositories';
 import { HttpModule } from '@nestjs/axios';
 import { GetWeatherHandler } from 'application/modules/weather/handlers/get-weather.handler';
+import { WeatherDtoMapper } from 'application/modules/weather/mappers';
 
 @Module({
   imports: [HttpModule, TypeOrmModule.forFeature([WeatherModel]), ConfigModule],
@@ -21,6 +22,7 @@ import { GetWeatherHandler } from 'application/modules/weather/handlers/get-weat
     WeatherUseCasesFactory,
     SendCoordinatesHandler,
     GetWeatherHandler,
+    WeatherDtoMapper,
     {
       provide: IWeatherLibrary,
       useClass: OpenWeatherLibrary,
