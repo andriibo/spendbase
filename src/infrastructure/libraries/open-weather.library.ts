@@ -7,17 +7,18 @@ import { ConfigService } from '@nestjs/config';
 
 export class OpenWeatherLibrary implements IWeatherLibrary {
   private readonly baseURL: string;
+  private readonly appId: string;
 
   constructor(
     @Inject(HttpService) private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
     this.baseURL = this.configService.get<string>('OPEN_WEATHER_HOST');
+    this.appId = this.configService.get<string>('OPEN_WEATHER_API_KEY');
   }
 
   async postCoordinates(lat: number, lon: number, part: string): Promise<any> {
-    const appId = this.configService.get<string>('OPEN_WEATHER_API_KEY');
-    const uri = `${this.baseURL}?lat=${lat}&lon=${lon}&exclude=${part}&appid=${appId}`;
+    const uri = `${this.baseURL}?lat=${lat}&lon=${lon}&exclude=${part}&appid=${this.appId}`;
 
     return await firstValueFrom(
       this.httpService.get(uri).pipe(
